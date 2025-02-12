@@ -8,7 +8,6 @@ const path = require('path');
 
 const logger = createLogger({
   level: 'info',
-  exitOnError: false,
   format: format.combine(
     format.timestamp(),
     format.json()
