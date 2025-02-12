@@ -35,13 +35,16 @@ app.get('/api', (req, res) => {
 
 // Define a GET endpoint at /getErrorRequest to simulate an application error
 app.get('/getErrorRequest', (req, res) => {
-
+  const span = tracer.scope().active();
+  
   try {
     throw new Error('This is a simulated application error');
   } catch (e) {
     // Log your error message
     logger.error('This is an ERROR log written in JSON. The house is on fire!', {fruit: 'apple'});
-    span.setTag('error', e);
+    if (span) {
+      span.setTag('error', e);
+    }
     // Return a 500 response to the client (or handle however you prefer)
     return res.status(500).json({ error: e.message });
   }
